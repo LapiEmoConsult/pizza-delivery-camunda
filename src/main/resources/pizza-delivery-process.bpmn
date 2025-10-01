@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_03xm54u" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.37.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:collaboration id="Collaboration_0sxu27c">
+    <bpmn:participant id="Participant_1nrhihf" name="Pizza Delivery Process" processRef="PizzaDeliveryProcess" />
+  </bpmn:collaboration>
+  <bpmn:process id="PizzaDeliveryProcess" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_0kvu60s">
+      <bpmn:lane id="Lane_0j7oypy" name="Kitchen Staff">
+        <bpmn:flowNodeRef>UserTask_PreparePizza</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_1nh410l" name="Delivery Team">
+        <bpmn:flowNodeRef>EndEvent_OrderCompleted</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_DeliverPizza</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_04jvpzb" name="System">
+        <bpmn:flowNodeRef>StartEvent_OrderReceived</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_ProcessPayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_QualityCheck</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_AssignDriver</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_OrderReceived" name="Order received">
+      <bpmn:outgoing>Flow_0uieien</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="EndEvent_OrderCompleted" name="Order Completed">
+      <bpmn:incoming>Flow_1thmgca</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="UserTask_PreparePizza" name="Prepare order">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0bj3mwv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vmy2l3</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="UserTask_DeliverPizza" name="Delivery Execution">
+      <bpmn:extensionElements>
+        <zeebe:userTask />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1v3twqg</bpmn:incoming>
+      <bpmn:outgoing>Flow_1thmgca</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="ServiceTask_ProcessPayment" name="Process payment">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="process-payment" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0uieien</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bj3mwv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_QualityCheck" name="Quality check">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="quality-check" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vmy2l3</bpmn:incoming>
+      <bpmn:outgoing>Flow_06ud8ts</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="ServiceTask_AssignDriver" name="Delivery Assignment">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="assign-driver" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_06ud8ts</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v3twqg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0uieien" sourceRef="StartEvent_OrderReceived" targetRef="ServiceTask_ProcessPayment" />
+    <bpmn:sequenceFlow id="Flow_1thmgca" sourceRef="UserTask_DeliverPizza" targetRef="EndEvent_OrderCompleted" />
+    <bpmn:sequenceFlow id="Flow_0bj3mwv" sourceRef="ServiceTask_ProcessPayment" targetRef="UserTask_PreparePizza" />
+    <bpmn:sequenceFlow id="Flow_0vmy2l3" sourceRef="UserTask_PreparePizza" targetRef="ServiceTask_QualityCheck" />
+    <bpmn:sequenceFlow id="Flow_1v3twqg" sourceRef="ServiceTask_AssignDriver" targetRef="UserTask_DeliverPizza" />
+    <bpmn:sequenceFlow id="Flow_06ud8ts" sourceRef="ServiceTask_QualityCheck" targetRef="ServiceTask_AssignDriver" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_0sxu27c">
+      <bpmndi:BPMNShape id="Participant_1nrhihf_di" bpmnElement="Participant_1nrhihf" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1110" height="410" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_04jvpzb_di" bpmnElement="Lane_04jvpzb" isHorizontal="true">
+        <dc:Bounds x="190" y="80" width="1080" height="150" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_1nh410l_di" bpmnElement="Lane_1nh410l" isHorizontal="true">
+        <dc:Bounds x="190" y="365" width="1080" height="125" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_0j7oypy_di" bpmnElement="Lane_0j7oypy" isHorizontal="true">
+        <dc:Bounds x="190" y="230" width="1080" height="135" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_OrderReceived">
+        <dc:Bounds x="242" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="224" y="175" width="73" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1s59o19_di" bpmnElement="EndEvent_OrderCompleted">
+        <dc:Bounds x="1192" y="412" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1168" y="455" width="85" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14e2kve_di" bpmnElement="UserTask_PreparePizza">
+        <dc:Bounds x="510" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0uoi91u_di" bpmnElement="UserTask_DeliverPizza">
+        <dc:Bounds x="1040" y="390" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0u31odq_di" bpmnElement="ServiceTask_ProcessPayment">
+        <dc:Bounds x="340" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1rdnf06_di" bpmnElement="ServiceTask_QualityCheck">
+        <dc:Bounds x="670" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_18y1zl5_di" bpmnElement="ServiceTask_AssignDriver">
+        <dc:Bounds x="830" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0uieien_di" bpmnElement="Flow_0uieien">
+        <di:waypoint x="278" y="150" />
+        <di:waypoint x="340" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1thmgca_di" bpmnElement="Flow_1thmgca">
+        <di:waypoint x="1140" y="430" />
+        <di:waypoint x="1192" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bj3mwv_di" bpmnElement="Flow_0bj3mwv">
+        <di:waypoint x="440" y="150" />
+        <di:waypoint x="475" y="150" />
+        <di:waypoint x="475" y="310" />
+        <di:waypoint x="510" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vmy2l3_di" bpmnElement="Flow_0vmy2l3">
+        <di:waypoint x="610" y="310" />
+        <di:waypoint x="635" y="310" />
+        <di:waypoint x="635" y="150" />
+        <di:waypoint x="670" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v3twqg_di" bpmnElement="Flow_1v3twqg">
+        <di:waypoint x="930" y="150" />
+        <di:waypoint x="980" y="150" />
+        <di:waypoint x="980" y="430" />
+        <di:waypoint x="1040" y="430" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06ud8ts_di" bpmnElement="Flow_06ud8ts">
+        <di:waypoint x="770" y="150" />
+        <di:waypoint x="830" y="150" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

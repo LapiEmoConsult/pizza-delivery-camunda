@@ -1,0 +1,9 @@
+camunda:
+  client: self-managed
+
+spring:
+  application:
+    name: pizza-delivery-service
+
+server:
+  port: 9000
