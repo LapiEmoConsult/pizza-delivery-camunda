@@ -41,7 +41,7 @@ public class PizzaOrderController {
         try {
             ProcessInstanceEvent processInstance = zeebeClient
                     .newCreateInstanceCommand()
-                    .bpmnProcessId("pizza-delivery-process")
+                    .bpmnProcessId("PizzaDeliveryProcess")
                     .latestVersion()
                     .variables(variables)
                     .send()
